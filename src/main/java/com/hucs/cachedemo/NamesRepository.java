@@ -1,5 +1,7 @@
 package com.hucs.cachedemo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class NamesRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NamesRepository.class);
 
     private List<String> nomes = new ArrayList<>();
 
@@ -23,7 +26,7 @@ public class NamesRepository {
     }
 
     public List<String> list(String filtro){
-        System.out.println("buscou no Repository");
+        LOGGER.info("buscou no Repository");
         return nomes.stream().filter(n -> n.contains(filtro)).collect(Collectors.toList());
     }
 

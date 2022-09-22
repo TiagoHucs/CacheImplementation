@@ -2,7 +2,7 @@ package com.hucs.cachedemo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,16 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class CacheService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheService.class);
 
     private Map<String,CacheObject> map = new HashMap<>();
     private Integer lifeMinutes = 1;
 
-
-    public void put(String key, Object obj){
+    public Object put(String key, Object obj){
         LOGGER.info("Cache salva key: " + key);
         map.put(key,new CacheObject(obj,LocalDateTime.now().plusMinutes(lifeMinutes)));
+        return obj;
     }
 
     public Object get(String key){
@@ -34,15 +35,16 @@ public class CacheService {
     }
 
     private void clean(){
-        LOGGER.info("Cache limpa registros inválidos ");
+        LOGGER.info("Cache verifica registros inválidos ");
         List<String> keysForRemove = new ArrayList<>();
         for (Map.Entry<String, CacheObject> entry : map.entrySet()) {
             if(!entry.getValue().isValid()){
                 keysForRemove.add(entry.getKey());
             }
         }
-
+        LOGGER.info("Cache registros inválidos: "+ keysForRemove.size());
         for (String key: keysForRemove) {
+            LOGGER.info("Cache limpa registros inválidos ");
             map.remove(key);
         }
     }

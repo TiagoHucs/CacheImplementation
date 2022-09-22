@@ -20,7 +20,10 @@ public class NamesService {
     private CacheService cache;
 
     public List<String> list(String filtro){
-        return repository.list(filtro);
+        if(cache.have(filtro)){
+           return (List<String>) cache.get(filtro);
+        }
+        return (List<String>) cache.put(filtro,repository.list(filtro));
     }
 
     public void save(String nome) {
