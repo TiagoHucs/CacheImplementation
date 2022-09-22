@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,14 +16,16 @@ public class NamesService {
     @Autowired
     private NamesRepository repository;
 
-    @Cacheable("namescache")
+    @Autowired
+    private CacheService cache;
+
     public List<String> list(String filtro){
-        System.out.println("buscou no serviço");
         return repository.list(filtro);
     }
 
-    @CacheEvict("namescache")
     public void save(String nome) {
        repository.save(nome);
     }
+
+
 }
