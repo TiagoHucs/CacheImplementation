@@ -1,2 +1,2 @@
 # CacheSpring
-Cache simples em memória no spring
+Cache simples implementado manualmente
